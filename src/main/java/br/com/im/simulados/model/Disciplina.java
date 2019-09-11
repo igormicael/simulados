@@ -29,7 +29,7 @@ public class Disciplina {
 	@ApiModelProperty(notes="nome da disciplina")
 	private String nome;
 
-	@Column
+	@Column(name="nome_professor")
 	@ApiModelProperty(notes="nome do professor responsável pela disciplina")
 	private String nomeProfessor;
 
