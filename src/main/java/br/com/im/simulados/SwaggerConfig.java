@@ -18,31 +18,23 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @Configuration
 @EnableSwagger2
 public class SwaggerConfig {
-	
+
 	@Bean
 	public Docket api() {
-		return new Docket(DocumentationType.SWAGGER_2)
-				.select()
-				.apis(apis())
-				.paths(PathSelectors.any())
-				.build()
+		return new Docket(DocumentationType.SWAGGER_2).select().apis(apis()).paths(PathSelectors.any()).build()
 				.apiInfo(apiInfo());
 	}
-	
-	private Predicate<RequestHandler> apis(){
+
+	private Predicate<RequestHandler> apis() {
 		return RequestHandlerSelectors.basePackage("br.com.im.simulados.controller");
 	}
-	
+
 	private ApiInfo apiInfo() {
-		
-		ApiInfo apiInfo = new ApiInfoBuilder()
-				.title("API de sistema de simulados para o enem")
-				.license("Apache License Version 2.0")
-				.licenseUrl("https://www.apache.org/licenses/LICENSE-2.0")
-				.version("1.0.0")
-				.contact(new Contact("Igor micael", null, "igor.m.peixoto@gmail.com"))
-				.build();
-		
+
+		ApiInfo apiInfo = new ApiInfoBuilder().title("API de sistema de simulados para o enem").description("Essa é a API.")
+				.license("Apache License Version 2.0").licenseUrl("https://www.apache.org/licenses/LICENSE-2.0")
+				.version("1.0.0").contact(new Contact("Igor micael", null, "igor.m.peixoto@gmail.com")).build();
+
 		return apiInfo;
 	}
 
