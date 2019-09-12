@@ -20,21 +20,17 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "disciplina")
-public class Disciplina {
+@Table(name = "aluno")
+public class Aluno {
 
 	@Id
-	@SequenceGenerator(name = "disciplina_seq", sequenceName = "disciplina_seq", initialValue = 1, allocationSize = 1)
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "disciplina_seq")
-	@ApiModelProperty(notes = "Identificador único da disciplina", required = true)
+	@SequenceGenerator(name = "aluno_seq", sequenceName = "aluno_seq", initialValue = 1, allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "aluno_seq")
+	@ApiModelProperty(notes = "Identificador único da aluno", required = true)
 	private Long id;
 
 	@Column
-	@ApiModelProperty(notes = "nome da disciplina")
-	private String nome;
-
-	@Column(name = "nome_professor")
-	@ApiModelProperty(notes = "nome do professor responsável pela disciplina")
-	private String nomeProfessor;
+	@ApiModelProperty(notes = "cpf da aluno")
+	private String cpf;
 
 }

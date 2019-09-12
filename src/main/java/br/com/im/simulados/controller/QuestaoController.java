@@ -14,50 +14,51 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.im.simulados.model.Gabarito;
-import br.com.im.simulados.service.GabaritoService;
+import br.com.im.simulados.model.Alternativa;
+import br.com.im.simulados.model.Questao;
+import br.com.im.simulados.service.QuestaoService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 
 @RestController
-@RequestMapping("/gabaritos")
-public class GabaritoController {
+@RequestMapping("/questoes")
+public class QuestaoController {
 
   @Autowired
-  private GabaritoService service;
+  private QuestaoService service;
 
   @GetMapping()
-  @ApiOperation(value = "Lista todos os Gabaritos", notes = "Lista todos os Gabaritos", response = Gabarito.class, responseContainer = "List")
-  @ApiResponses(value = { @ApiResponse(code = 200, message = "Gabaritos listados com sucesso"),
-      @ApiResponse(code = 401, message = "Você não tem autorização para visualizar esse recurso"),
-      @ApiResponse(code = 403, message = "Acessar o recurso que você estava tentando acessar é proibido"),
-      @ApiResponse(code = 404, message = "O recurso que você está tentando acessar não foi encontrado") })
-  public List<Gabarito> findAll() {
+  public List<Questao> findAll() {
     return service.findAll();
   }
 
   @GetMapping("/{id}")
-  public Gabarito findById(@PathVariable("id") Long id) {
+  public Questao findById(@PathVariable("id") Long id) {
     return service.findById(id);
+  }
+
+  @GetMapping("/{id}/alternativas")
+  public List<Alternativa> findAlternativasById(@PathVariable("id") Long id) {
+    return service.findAlternativasById(id);
   }
 
   @ResponseStatus(HttpStatus.NO_CONTENT)
   @DeleteMapping("/{id}")
-  @ApiOperation(value = "Exclui um Gabarito", notes = "Exclui um Gabarito")
-  @ApiResponses({ @ApiResponse(code = 204, message = "Exclusão com sucesso de um Gabarito") })
+  @ApiOperation(value = "Exclui uma questão", notes = "Exclui uma questão")
+  @ApiResponses({ @ApiResponse(code = 204, message = "Exclusão com sucesso de uma questão") })
   public void deleteById(@PathVariable("id") Long id) {
     service.deleteById(id);
   }
 
   @PostMapping
-  public void save(@RequestBody Gabarito gabarito) {
-    service.save(gabarito);
+  public void save(@RequestBody Questao questao) {
+    service.save(questao);
   }
 
   @PutMapping
-  public void update(@RequestBody Gabarito gabarito) {
-    service.update(gabarito);
+  public void update(@RequestBody Questao questao) {
+    service.update(questao);
   }
 
 }

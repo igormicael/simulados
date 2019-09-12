@@ -38,4 +38,8 @@ public class ProvaService {
 		this.repository.deleteAll();
 	}
 
+	public Prova findGabaritoById(Long id) {
+		return null;
+	}
+
 }

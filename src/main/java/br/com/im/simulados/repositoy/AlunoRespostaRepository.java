@@ -1,10 +1,12 @@
 package br.com.im.simulados.repositoy;
 
+import java.util.List;
+
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
-import br.com.im.simulados.model.Resposta;
+import br.com.im.simulados.model.AlunoResposta;
 
 @Repository
-public interface RespostaRepository extends CrudRepository<Resposta, Long> {
+public interface AlunoRespostaRepository extends CrudRepository<AlunoResposta, Long> {
 }

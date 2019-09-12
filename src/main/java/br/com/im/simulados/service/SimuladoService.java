@@ -38,4 +38,8 @@ public class SimuladoService {
 		this.repository.deleteAll();
 	}
 
+	public List<Simulado> ranking(Long id) {
+		return null;
+	}
+
 }
