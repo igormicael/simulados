@@ -7,4 +7,5 @@ import br.com.im.simulados.model.Simulado;
 
 @Repository
 public interface SimuladoRepository extends CrudRepository<Simulado, Long> {
+
 }

@@ -6,6 +6,7 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -35,15 +36,15 @@ import lombok.NoArgsConstructor;
 public class Gabarito {
 
 	@Id
-	@SequenceGenerator(name = "disciplina_seq", sequenceName = "disciplina_seq", initialValue = 1, allocationSize = 1)
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "disciplina_seq")
-	@ApiModelProperty(notes = "Identificador único da disciplina", required = true)
+	@SequenceGenerator(name = "gabarito_seq", sequenceName = "gabarito_seq", initialValue = 1, allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "gabarito_seq")
+	@ApiModelProperty(notes = "Identificador único da gabarito", required = true)
 	private Long id;
 
 	@Column
 	private Date desativacao;
 
-	@OneToMany(mappedBy = "gabarito", cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(mappedBy = "gabarito", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
 	@JsonManagedReference
 	@ApiModelProperty(notes = "respostas das questões da prova")
 	private List<Alternativa> altenartivas;

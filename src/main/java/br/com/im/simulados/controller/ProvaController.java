@@ -44,8 +44,8 @@ public class ProvaController {
 
   // RN-02
   @GetMapping("/{id}/gabarito")
-  public Prova findGabaritoBy(@PathVariable("id") Long id) {
-    return service.findGabaritoById(id);
+  public Prova findByIdWithGabarito(@PathVariable("id") Long id) {
+    return service.findByIdWithGabarito(id);
   }
 
   @ResponseStatus(HttpStatus.NO_CONTENT)

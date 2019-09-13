@@ -1,10 +1,12 @@
 package br.com.im.simulados.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import br.com.im.simulados.model.Gabarito;
 import br.com.im.simulados.model.Prova;
 import br.com.im.simulados.repositoy.ProvaRepository;
 
@@ -14,8 +16,12 @@ public class ProvaService {
 	@Autowired
 	private ProvaRepository repository;
 
+	@Autowired
+	private GabaritoService gabaritoService;
+
 	public Prova findById(Long id) {
-		return this.repository.findById(id).get();
+		Optional<Prova> findById = this.repository.findById(id);
+		return findById.get();
 	}
 
 	public List<Prova> findAll() {
@@ -38,8 +44,15 @@ public class ProvaService {
 		this.repository.deleteAll();
 	}
 
-	public Prova findGabaritoById(Long id) {
-		return null;
+	public Prova findByIdWithGabarito(Long id) {
+		Prova prova = findById(id);
+		Gabarito gabarito = gabaritoService.findByProvaId(id);
+		prova.setGabarito(gabarito);
+		return prova;
+	}
+
+	public List<Prova> findAllBySimuladoId(Long id) {
+		return this.repository.findAllBySimuladoId(id);
 	}
 
 }

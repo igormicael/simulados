@@ -7,4 +7,6 @@ import br.com.im.simulados.model.Gabarito;
 
 @Repository
 public interface GabaritoRepository extends CrudRepository<Gabarito, Long> {
+
+  Gabarito findByProvaId(Long provaId);
 }

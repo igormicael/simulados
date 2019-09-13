@@ -44,7 +44,7 @@ public class Alternativa {
 	private Questao questao;
 
 	@ManyToOne
-	@JoinColumn(name = "gabarito_id", nullable = false, foreignKey = @ForeignKey(name = "alternativa_gabrito_id"))
+	@JoinColumn(name = "gabarito_id", nullable = true, foreignKey = @ForeignKey(name = "alternativa_gabrito_id"))
 	@JsonBackReference
 	private Gabarito gabarito;
 }

@@ -32,13 +32,13 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "prova")
+@Table(name = "questao")
 public class Questao {
 
 	@Id
-	@SequenceGenerator(name = "disciplina_seq", sequenceName = "disciplina_seq", initialValue = 1, allocationSize = 1)
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "disciplina_seq")
-	@ApiModelProperty(notes = "Identificador único da disciplina", required = true)
+	@SequenceGenerator(name = "questao_seq", sequenceName = "questao_seq", initialValue = 1, allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "questao_seq")
+	@ApiModelProperty(notes = "Identificador único da questao", required = true)
 	private Long id;
 
 	@Column

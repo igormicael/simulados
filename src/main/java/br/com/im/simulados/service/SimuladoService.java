@@ -14,12 +14,19 @@ public class SimuladoService {
 	@Autowired
 	private SimuladoRepository repository;
 
+	@Autowired
+	private ProvaService provaService;
+
 	public Simulado findById(Long id) {
 		return this.repository.findById(id).get();
 	}
 
 	public List<Simulado> findAll() {
-		return (List<Simulado>) this.repository.findAll();
+		List<Simulado> findAll = (List<Simulado>) this.repository.findAll();
+		for (Simulado simulado : findAll) {
+			simulado.setProvas(provaService.findAllBySimuladoId(simulado.getId()));
+		}
+		return findAll;
 	}
 
 	public void deleteById(Long id) {
