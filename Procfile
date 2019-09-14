@@ -1,1 +1,1 @@
-release: java -cp target/simulados-0.0.1.jar:target/dependency/* br.com.im.simulados.Migrations
+release: ./mvnw flyway:migrate
