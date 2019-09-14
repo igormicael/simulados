@@ -52,5 +52,3 @@ build/
 
 ### VS Code ###
 .vscode/
-
-.mvn/
