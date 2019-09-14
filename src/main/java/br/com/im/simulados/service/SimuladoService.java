@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import br.com.im.simulados.dto.RankingDTO;
 import br.com.im.simulados.model.Simulado;
 import br.com.im.simulados.repositoy.SimuladoRepository;
 
@@ -16,6 +17,9 @@ public class SimuladoService {
 
 	@Autowired
 	private ProvaService provaService;
+
+	@Autowired
+	private RankingService rankingService;
 
 	public Simulado findById(Long id) {
 		return this.repository.findById(id).get();
@@ -45,8 +49,8 @@ public class SimuladoService {
 		this.repository.deleteAll();
 	}
 
-	public List<Simulado> ranking(Long id) {
-		return null;
+	public List<RankingDTO> ranking(Long id) {
+		return rankingService.buscarRakingPorSimulado(id);
 	}
 
 }

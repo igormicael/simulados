@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.com.im.simulados.dto.RankingDTO;
 import br.com.im.simulados.model.Alternativa;
 import br.com.im.simulados.model.Simulado;
 import br.com.im.simulados.service.AlternativaService;
@@ -44,7 +45,7 @@ public class SimuladoController {
 
   // RN-04
   @GetMapping("/{id}/ranking")
-  public List<Simulado> ranking(@PathVariable("id") Long id) {
+  public List<RankingDTO> ranking(@PathVariable("id") Long id) {
     return service.ranking(id);
   }
 

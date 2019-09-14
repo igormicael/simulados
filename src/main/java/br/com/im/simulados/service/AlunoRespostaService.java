@@ -38,4 +38,8 @@ public class AlunoRespostaService {
 		this.repository.deleteAll();
 	}
 
+	public List<AlunoResposta> findAllBySimuladoId(Long id) {
+		return this.repository.findAllBySimuladoId(id);
+	}
+
 }
