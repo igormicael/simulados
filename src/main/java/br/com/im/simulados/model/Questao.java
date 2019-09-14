@@ -60,4 +60,8 @@ public class Questao {
 	@JsonBackReference
 	private Prova prova;
 
+	public Questao(Long questaoId) {
+		this.id = questaoId;
+	}
+
 }

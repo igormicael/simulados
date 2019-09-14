@@ -41,19 +41,15 @@ CREATE SEQUENCE alternativa_seq
 
 CREATE TABLE aluno (
     id bigint NOT NULL,
+    nome character varying(255), 
     cpf character varying(255)
 );
-
-
---
--- TOC entry 195 (class 1259 OID 45898)
--- Name: aluno_aud; Type: TABLE; Schema: public; Owner: -
---
 
 CREATE TABLE aluno_aud (
     id bigint NOT NULL,
     rev integer NOT NULL,
     revtype smallint,
+    nome character varying(255), 
     cpf character varying(255)
 );
 

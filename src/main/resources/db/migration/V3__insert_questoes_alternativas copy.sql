@@ -1,21 +1,3 @@
-insert into disciplina(id, nome , nome_professor)
-values (nextval ('disciplina_seq'), 'atualidades', 'aline'); -- 1
-insert into disciplina(id, nome , nome_professor)
-values (nextval ('disciplina_seq'), 'historia', 'cléo'); -- 2
-insert into disciplina(id, nome , nome_professor)
-values (nextval ('disciplina_seq'), 'geografia', 'fabio'); -- 3
-
-insert into simulado(id, data, tipo)
-values (nextval ('simulado_seq'), now(), 'HUMANAS'); -- 1
-insert into simulado(id, data, tipo)
-values (nextval ('simulado_seq'), now(), 'EXATAS'); -- 2
-
-insert into prova(id, disciplina_id, simulado_id)
-values (nextval ('prova_seq'), 1 ,1 ); -- atualidades -- 1
-
-insert into prova(id, disciplina_id, simulado_id)
-values (nextval ('prova_seq'), 1 ,2 ); -- atualidades -- 4
-
 insert into questao(id, enunciado, dificuldade_questao, prova_id)
 values (nextval ('questao_seq'), '“O esquema funcionava através da superfaturação de obras que faziam parte de um programa que tinha como objetivo acelerar o crescimento econômico no País”. Essa descrição corresponde a uma operação criminosa no Brasil. Trata-se da:',
 'FACIL', 1); -- 1
@@ -204,11 +186,3 @@ values (nextval ('alternativa_seq'), 'Revolução Pernambucana', 10);
 
 insert into alternativa(id, descricao, questao_id)
 values (nextval ('alternativa_seq'), 'Revolução Acreana', 10);
-
--- gabarito
-
-insert into gabarito(id, prova_id)
-values (nextval ('gabarito_seq'), 1);
-
-update alternativa set gabarito_id = 1 where id in 
-(2,8,11,16,25,29,31,36,41,46);

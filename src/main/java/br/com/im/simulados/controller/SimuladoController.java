@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.com.im.simulados.model.Alternativa;
 import br.com.im.simulados.model.Simulado;
+import br.com.im.simulados.service.AlternativaService;
 import br.com.im.simulados.service.SimuladoService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -21,6 +22,9 @@ public class SimuladoController {
 
   @Autowired
   private SimuladoService service;
+
+  @Autowired
+  private AlternativaService alternativaService;
 
   @GetMapping()
   @ApiOperation(value = "Lista todos os Simulados", notes = "Lista todos os Simulados", response = Simulado.class, responseContainer = "List")
@@ -48,7 +52,6 @@ public class SimuladoController {
   @GetMapping("/{idSimulado}/provas/{idProva}/questoes/{idQuestao}")
   public List<Alternativa> responder(@PathVariable("idSimulado") Long idSimulado, @PathVariable("idProva") Long idProva,
       @PathVariable("idQuestao") Long idQuestao) {
-    return null; // service.ranking(id);
+    return alternativaService.findAllByQuestaoId(idQuestao);
   }
-
 }

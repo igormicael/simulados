@@ -14,6 +14,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import org.hibernate.envers.Audited;
 
+import br.com.im.simulados.dto.RespostaDTO;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -56,6 +57,14 @@ public class AlunoResposta {
 	@ManyToOne
 	@JoinColumn(name = "alternativa_id", nullable = false, foreignKey = @ForeignKey(name = "ar_alternativa_id"))
 	@JsonBackReference
-	private Alternativa resposta;
+	private Alternativa alternativa;
+
+	public AlunoResposta(RespostaDTO resposta) {
+		this.aluno = new Aluno(resposta.getAlunoId());
+		this.simulado = new Simulado(resposta.getSimuladoId());
+		this.prova = new Prova(resposta.getProvaId());
+		this.questao = new Questao(resposta.getQuestaoId());
+		this.alternativa = new Alternativa(resposta.getAlternativaId());
+	}
 
 }

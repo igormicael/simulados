@@ -52,4 +52,8 @@ public class Simulado {
 	@ApiModelProperty(notes = "provas contidas no simulado")
 	private List<Prova> provas;
 
+	public Simulado(Long simuladoId) {
+		this.id = simuladoId;
+	}
+
 }

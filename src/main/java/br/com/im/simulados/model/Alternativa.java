@@ -47,4 +47,8 @@ public class Alternativa {
 	@JoinColumn(name = "gabarito_id", nullable = true, foreignKey = @ForeignKey(name = "alternativa_gabrito_id"))
 	@JsonBackReference
 	private Gabarito gabarito;
+
+	public Alternativa(Long alternativaId) {
+		this.id = alternativaId;
+	}
 }

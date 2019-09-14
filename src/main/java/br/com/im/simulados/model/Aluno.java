@@ -26,11 +26,19 @@ public class Aluno {
 	@Id
 	@SequenceGenerator(name = "aluno_seq", sequenceName = "aluno_seq", initialValue = 1, allocationSize = 1)
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "aluno_seq")
-	@ApiModelProperty(notes = "Identificador único da aluno", required = true)
+	@ApiModelProperty(notes = "Identificador único do aluno", required = true)
 	private Long id;
 
 	@Column
-	@ApiModelProperty(notes = "cpf da aluno")
+	@ApiModelProperty(notes = "nome do aluno")
+	private String nome;
+
+	@Column
+	@ApiModelProperty(notes = "cpf do aluno")
 	private String cpf;
+
+	public Aluno(Long alunoId) {
+		this.id = alunoId;
+	}
 
 }
