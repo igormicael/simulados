@@ -13,6 +13,7 @@ import org.hibernate.envers.Audited;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 @Entity
@@ -20,6 +21,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@EqualsAndHashCode
 @Table(name = "aluno")
 public class Aluno {
 
@@ -31,10 +33,12 @@ public class Aluno {
 
 	@Column
 	@ApiModelProperty(notes = "nome do aluno")
+	@EqualsAndHashCode.Exclude
 	private String nome;
 
 	@Column
 	@ApiModelProperty(notes = "cpf do aluno")
+	@EqualsAndHashCode.Exclude
 	private String cpf;
 
 	public Aluno(Long alunoId) {
