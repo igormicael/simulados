@@ -134,36 +134,20 @@ public class RankingService {
 
     if(!ranking.isEmpty()){
       ranking = ranking.stream().sorted().collect(Collectors.toList());
-      
-      Long posicao = 1L;
-      
       RankingDTO ultimaPosicao = null;
-      
       for (Long i = 0L ; i<= ranking.size()-1 ; i++) {
         Long j = i + 1;
         RankingDTO dto = ranking.get(i.intValue());
         if(ultimaPosicao != null){
           if(ultimaPosicao.getNota().equals(dto.getNota())){
             dto.setRanking(i);    
-          }else{
-            dto.setRanking(j);
           }
-        }else{
+        }
+        if(dto.getRanking() == null){
           dto.setRanking(j);
         }
         ultimaPosicao = dto;
       }
-      // for (RankingDTO dto : ranking) {
-      //   if(ultimaPosicao != null){
-      //     if(!ultimaPosicao.getNota().equals(dto.getNota())){
-      //       dto.setRanking(posicao);
-      //       posicao++;
-      //     }
-      //   }
-      //   dto.setRanking(posicao);
-      //   ultimaPosicao = dto;
-      // }
-
     }
     return ranking;
   }
