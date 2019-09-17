@@ -1,7 +1,6 @@
 package br.com.im.simulados.service;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -135,17 +134,35 @@ public class RankingService {
 
     if(!ranking.isEmpty()){
       ranking = ranking.stream().sorted().collect(Collectors.toList());
+      
       Long posicao = 1L;
-      Long ultimaNota = -1L;
-      for (RankingDTO dto : ranking) {
-        if(ultimaNota != -1){
-          if(!ultimaNota.equals(dto.getNota())){
-            posicao++;
+      
+      RankingDTO ultimaPosicao = null;
+      
+      for (Long i = 0L ; i<= ranking.size()-1 ; i++) {
+        Long j = i + 1;
+        RankingDTO dto = ranking.get(i.intValue());
+        if(ultimaPosicao != null){
+          if(ultimaPosicao.getNota().equals(dto.getNota())){
+            dto.setRanking(i);    
+          }else{
+            dto.setRanking(j);
           }
+        }else{
+          dto.setRanking(j);
         }
-        dto.setRanking(posicao);
-        ultimaNota = dto.getNota();
+        ultimaPosicao = dto;
       }
+      // for (RankingDTO dto : ranking) {
+      //   if(ultimaPosicao != null){
+      //     if(!ultimaPosicao.getNota().equals(dto.getNota())){
+      //       dto.setRanking(posicao);
+      //       posicao++;
+      //     }
+      //   }
+      //   dto.setRanking(posicao);
+      //   ultimaPosicao = dto;
+      // }
 
     }
     return ranking;
