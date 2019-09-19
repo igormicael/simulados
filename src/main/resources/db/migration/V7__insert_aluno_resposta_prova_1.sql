@@ -1,9 +1,3 @@
-insert into aluno(id, nome, cpf) values (nextval('aluno_seq'),'igor', '111.111.111-11');
-insert into aluno(id, nome, cpf) values (nextval('aluno_seq'),'fabio', '222.222.222-22');
-insert into aluno(id, nome, cpf) values (nextval('aluno_seq'),'cesar', '333.333.333-33');
-insert into aluno(id, nome, cpf) values (nextval('aluno_seq'),'rodrigo', '444.444.444-44');
-insert into aluno(id, nome, cpf) values (nextval('aluno_seq'),'tiago', '555.555.555-55');
-
 insert into aluno_resposta(id, aluno_id, simulado_id, prova_id, questao_id, alternativa_id)
 values (nextval('aluno_resposta_seq'), 2,1,1,1,1);
 insert into aluno_resposta(id, aluno_id, simulado_id, prova_id, questao_id, alternativa_id)
