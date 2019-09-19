@@ -1,8 +1,10 @@
 package br.com.im.simulados.service;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.LongSummaryStatistics;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -36,9 +38,12 @@ public class RankingService {
     List<Prova> provas = provaService.findAllBySimuladoId(id);
 
     LinkedHashMap<Aluno, List<AlunoResposta>> mapAlunosRespostas = listaToMap(alunosResposta);
-    LinkedHashMap<Aluno, List<Questao>> mapAlunosQuestoesAcertadas = verificarQuestoesCorretas(mapAlunosRespostas,
-        provas);
-    LinkedHashMap<Aluno, Long> mapAlunosNotas = calcularNotaPorAluno(mapAlunosQuestoesAcertadas);
+    
+    LinkedHashMap<Aluno, LinkedHashMap<Prova, List<Questao>>> mapAlunosProvasQuestoesAcertadas = 
+    verificarQuestoesCorretas(mapAlunosRespostas, provas);
+
+    LinkedHashMap<Aluno, Long> mapAlunosNotas = calcularNotaPorAluno(mapAlunosProvasQuestoesAcertadas);
+    
     return computarRanking(mapAlunosNotas);
 
   }
@@ -59,19 +64,20 @@ public class RankingService {
     }
     return map;
   }
-
-  public LinkedHashMap<Aluno, List<Questao>> verificarQuestoesCorretas(
+// map<Aluno, map< prova, list< questao > > >
+  public LinkedHashMap<Aluno, LinkedHashMap<Prova, List<Questao>>> verificarQuestoesCorretas(
       LinkedHashMap<Aluno, List<AlunoResposta>> mapAlunosRespostas, List<Prova> provas) {
 
-    LinkedHashMap<Aluno, List<Questao>> mapAlunoAlternativasCertas = new LinkedHashMap<>();
+    LinkedHashMap<Aluno, LinkedHashMap<Prova, List<Questao>>> mapAlunoProvaAlternativasCertas = new LinkedHashMap<>();
 
     for (Map.Entry<Aluno, List<AlunoResposta>> entry : mapAlunosRespostas.entrySet()) {
-      List<Questao> questoesCertas = new ArrayList<>();
-
+      LinkedHashMap<Prova, List<Questao>> questoesPorProva = new LinkedHashMap<>();
+      
       List<Prova> alunoProvas = entry.getValue().stream().filter(i -> i.getAluno().equals(entry.getKey()))
           .map(AlunoResposta::getProva).distinct().collect(Collectors.toList());
 
       for (Prova prova : alunoProvas) {
+        List<Questao> questoesCertas = new ArrayList<>();
         Prova prova_ = provas.get(provas.indexOf(prova));
         Gabarito gabarito = gabaritoService.findByProvaId(prova_.getId());
         List<Alternativa> altenartivasCertas = gabarito.getAltenartivas();
@@ -79,21 +85,35 @@ public class RankingService {
             .map(AlunoResposta::getAlternativa).distinct().collect(Collectors.toList());
 
         map.stream().filter(i -> altenartivasCertas.contains(i)).forEach(i -> questoesCertas.add(i.getQuestao()));
-        mapAlunoAlternativasCertas.put(entry.getKey(), questoesCertas);
+        questoesPorProva.put(prova, questoesCertas);
+        mapAlunoProvaAlternativasCertas.put(entry.getKey(), questoesPorProva);
       }
     }
-    return mapAlunoAlternativasCertas;
+    return mapAlunoProvaAlternativasCertas;
   }
 
   public LinkedHashMap<Aluno, Long> calcularNotaPorAluno(
-      LinkedHashMap<Aluno, List<Questao>> mapAlunosQuestoesAcertadas) {
+    LinkedHashMap<Aluno, LinkedHashMap<Prova, List<Questao>>> mapAlunosQuestoesAcertadas) {
 
     LinkedHashMap<Aluno, Long> notasPorAluno = new LinkedHashMap<>();
-    for (Map.Entry<Aluno, List<Questao>> entry : mapAlunosQuestoesAcertadas.entrySet()) {
-      Long nota = calcularNota(entry.getValue());
-      notasPorAluno.put(entry.getKey(), nota);
+    for (Map.Entry<Aluno, LinkedHashMap<Prova, List<Questao>> > entry : mapAlunosQuestoesAcertadas.entrySet()) {
+
+      LinkedHashMap<Prova, Long> notasPorProva = new LinkedHashMap<>();
+      for (Map.Entry<Prova, List<Questao>> innerEntry : entry.getValue().entrySet()) {
+        Long nota = calcularNota(innerEntry.getValue());
+        notasPorProva.put(innerEntry.getKey(), nota);
+      }
+      Long media = calcularMediaProvas(notasPorProva.values());
+
+      notasPorAluno.put(entry.getKey(), media);
     }
     return notasPorAluno;
+  }
+
+  private Long calcularMediaProvas(Collection<Long> notasPorProva) {
+
+    LongSummaryStatistics sumario = notasPorProva.stream().collect(LongSummaryStatistics::new, LongSummaryStatistics::accept, LongSummaryStatistics::combine);
+    return Double.valueOf(sumario.getAverage()).longValue();
   }
 
   private Long calcularNota(List<Questao> questoes) {
