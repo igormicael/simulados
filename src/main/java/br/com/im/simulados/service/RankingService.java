@@ -65,7 +65,6 @@ public class RankingService {
     return map;
   }
 
-  // map<Aluno, map< prova, list< questao > > >
   public LinkedHashMap<Aluno, LinkedHashMap<Prova, List<Questao>>> verificarQuestoesCorretas(
       LinkedHashMap<Aluno, List<AlunoResposta>> mapAlunosRespostas, List<Prova> provas) {
 
@@ -97,42 +96,52 @@ public class RankingService {
       LinkedHashMap<Aluno, LinkedHashMap<Prova, List<Questao>>> mapAlunosQuestoesAcertadas) {
 
     LinkedHashMap<Aluno, Long> notasPorAluno = new LinkedHashMap<>();
-    for (Map.Entry<Aluno, LinkedHashMap<Prova, List<Questao>>> entry : mapAlunosQuestoesAcertadas.entrySet()) {
 
-      LinkedHashMap<Prova, Long> notasPorProva = new LinkedHashMap<>();
-      for (Map.Entry<Prova, List<Questao>> innerEntry : entry.getValue().entrySet()) {
-        Long nota = calcularNota(innerEntry.getValue());
-        notasPorProva.put(innerEntry.getKey(), nota);
+    if(mapAlunosQuestoesAcertadas != null && !mapAlunosQuestoesAcertadas.isEmpty()){
+      for (Map.Entry<Aluno, LinkedHashMap<Prova, List<Questao>>> entry : mapAlunosQuestoesAcertadas.entrySet()) {
+        LinkedHashMap<Prova, Long> notasPorProva = new LinkedHashMap<>();
+
+        if(entry != null && entry.getValue() != null && !entry.getValue().isEmpty()){
+          for (Map.Entry<Prova, List<Questao>> innerEntry : entry.getValue().entrySet()) {
+            Long nota = calcularNota(innerEntry.getValue());
+            notasPorProva.put(innerEntry.getKey(), nota);
+          }
+          Long media = calcularMediaProvas(notasPorProva.values());
+          notasPorAluno.put(entry.getKey(), media);
+        }
       }
-      Long media = calcularMediaProvas(notasPorProva.values());
-
-      notasPorAluno.put(entry.getKey(), media);
     }
     return notasPorAluno;
   }
 
-  private Long calcularMediaProvas(Collection<Long> notasPorProva) {
-
-    LongSummaryStatistics sumario = notasPorProva.stream().collect(LongSummaryStatistics::new,
-        LongSummaryStatistics::accept, LongSummaryStatistics::combine);
-    return Double.valueOf(sumario.getAverage()).longValue();
+  public Long calcularMediaProvas(Collection<Long> notasPorProva) {
+    if(notasPorProva != null && !notasPorProva.isEmpty()){
+      LongSummaryStatistics sumario = notasPorProva.stream().collect(LongSummaryStatistics::new,
+          LongSummaryStatistics::accept, LongSummaryStatistics::combine);
+      return Double.valueOf(sumario.getAverage()).longValue();
+    }
+    return 0L;
   }
 
-  private Long calcularNota(List<Questao> questoes) {
+  public Long calcularNota(List<Questao> questoes) {
 
     Long qtdeFacil = 0L;
     Long qtdeMedia = 0L;
     Long qtdeDificil = 0L;
 
-    for (Questao questao : questoes) {
-      if (questao.getDificuldadeQuestao().equals(DificuldadeQuestao.FACIL)) {
-        qtdeFacil++;
-      }
-      if (questao.getDificuldadeQuestao().equals(DificuldadeQuestao.MEDIA)) {
-        qtdeMedia++;
-      }
-      if (questao.getDificuldadeQuestao().equals(DificuldadeQuestao.DIFICIL)) {
-        qtdeDificil++;
+    if (questoes != null && !questoes.isEmpty()) {
+      for (Questao questao : questoes) {
+        if (questao != null && questao.getDificuldadeQuestao() != null) {
+          if (questao.getDificuldadeQuestao().equals(DificuldadeQuestao.FACIL)) {
+            qtdeFacil++;
+          }
+          if (questao.getDificuldadeQuestao().equals(DificuldadeQuestao.MEDIA)) {
+            qtdeMedia++;
+          }
+          if (questao.getDificuldadeQuestao().equals(DificuldadeQuestao.DIFICIL)) {
+            qtdeDificil++;
+          }
+        }
       }
     }
     Long valorFacil = qtdeFacil == 0 ? 0 : qtdeFacil * DificuldadeQuestao.FACIL.getValor();
@@ -148,9 +157,7 @@ public class RankingService {
       for (Map.Entry<Aluno, Long> entry : mapAlunosNotas.entrySet()) {
         Aluno aluno = entry.getKey();
         Long nota = entry.getValue();
-        if(
-          aluno != null && aluno.getId() != null && 
-          aluno.getNome() != null && nota != null){
+        if (aluno != null && aluno.getId() != null && aluno.getNome() != null && nota != null) {
           RankingDTO dto = new RankingDTO();
           dto.setAlunoId(aluno.getId());
           dto.setAlunoNome(aluno.getNome());

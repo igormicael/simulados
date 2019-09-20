@@ -2,7 +2,7 @@ package br.com.im.simulados.model;
 
 public enum DificuldadeQuestao {
 
-	FACIL("Facil", 15L), MEDIA("Media", 15L), DIFICIL("Dificil", 15L);
+	FACIL("Facil", 15L), MEDIA("Media", 12L), DIFICIL("Dificil", 8L);
 
 	private String descricao;
 	private Long valor;
