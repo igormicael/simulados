@@ -1,5 +1,7 @@
 package br.com.im.simulados.model;
 
+import java.util.Objects;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -11,17 +13,9 @@ import javax.persistence.Table;
 import org.hibernate.envers.Audited;
 
 import io.swagger.annotations.ApiModelProperty;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
 
 @Entity
 @Audited
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
-@EqualsAndHashCode
 @Table(name = "aluno")
 public class Aluno {
 
@@ -33,16 +27,71 @@ public class Aluno {
 
 	@Column
 	@ApiModelProperty(notes = "nome do aluno")
-	@EqualsAndHashCode.Exclude
 	private String nome;
 
 	@Column
 	@ApiModelProperty(notes = "cpf do aluno")
-	@EqualsAndHashCode.Exclude
 	private String cpf;
 
+	public Aluno() {
+	}
+	
 	public Aluno(Long alunoId) {
 		this.id = alunoId;
 	}
 
+	public Aluno(Long id, String nome, String cpf) {
+		this.id = id;
+		this.nome = nome;
+		this.cpf = cpf;
+	}
+
+	public Long getId() {
+		return this.id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getNome() {
+		return this.nome;
+	}
+
+	public void setNome(String nome) {
+		this.nome = nome;
+	}
+
+	public String getCpf() {
+		return this.cpf;
+	}
+
+	public void setCpf(String cpf) {
+		this.cpf = cpf;
+	}
+
+	@Override
+		public boolean equals(Object o) {
+				if (o == this)
+						return true;
+				if (!(o instanceof Aluno)) {
+						return false;
+				}
+				Aluno aluno = (Aluno) o;
+				return Objects.equals(id, aluno.id) ;
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(id);
+	}
+
+	@Override
+	public String toString() {
+		return "{" +
+			" id='" + getId() + "'" +
+			", nome='" + getNome() + "'" +
+			", cpf='" + getCpf() + "'" +
+			"}";
+	}
 }

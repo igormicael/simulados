@@ -38,12 +38,12 @@ public class RankingService {
     List<Prova> provas = provaService.findAllBySimuladoId(id);
 
     LinkedHashMap<Aluno, List<AlunoResposta>> mapAlunosRespostas = listaToMap(alunosResposta);
-    
-    LinkedHashMap<Aluno, LinkedHashMap<Prova, List<Questao>>> mapAlunosProvasQuestoesAcertadas = 
-    verificarQuestoesCorretas(mapAlunosRespostas, provas);
+
+    LinkedHashMap<Aluno, LinkedHashMap<Prova, List<Questao>>> mapAlunosProvasQuestoesAcertadas = verificarQuestoesCorretas(
+        mapAlunosRespostas, provas);
 
     LinkedHashMap<Aluno, Long> mapAlunosNotas = calcularNotaPorAluno(mapAlunosProvasQuestoesAcertadas);
-    
+
     return computarRanking(mapAlunosNotas);
 
   }
@@ -64,7 +64,8 @@ public class RankingService {
     }
     return map;
   }
-// map<Aluno, map< prova, list< questao > > >
+
+  // map<Aluno, map< prova, list< questao > > >
   public LinkedHashMap<Aluno, LinkedHashMap<Prova, List<Questao>>> verificarQuestoesCorretas(
       LinkedHashMap<Aluno, List<AlunoResposta>> mapAlunosRespostas, List<Prova> provas) {
 
@@ -72,7 +73,7 @@ public class RankingService {
 
     for (Map.Entry<Aluno, List<AlunoResposta>> entry : mapAlunosRespostas.entrySet()) {
       LinkedHashMap<Prova, List<Questao>> questoesPorProva = new LinkedHashMap<>();
-      
+
       List<Prova> alunoProvas = entry.getValue().stream().filter(i -> i.getAluno().equals(entry.getKey()))
           .map(AlunoResposta::getProva).distinct().collect(Collectors.toList());
 
@@ -93,10 +94,10 @@ public class RankingService {
   }
 
   public LinkedHashMap<Aluno, Long> calcularNotaPorAluno(
-    LinkedHashMap<Aluno, LinkedHashMap<Prova, List<Questao>>> mapAlunosQuestoesAcertadas) {
+      LinkedHashMap<Aluno, LinkedHashMap<Prova, List<Questao>>> mapAlunosQuestoesAcertadas) {
 
     LinkedHashMap<Aluno, Long> notasPorAluno = new LinkedHashMap<>();
-    for (Map.Entry<Aluno, LinkedHashMap<Prova, List<Questao>> > entry : mapAlunosQuestoesAcertadas.entrySet()) {
+    for (Map.Entry<Aluno, LinkedHashMap<Prova, List<Questao>>> entry : mapAlunosQuestoesAcertadas.entrySet()) {
 
       LinkedHashMap<Prova, Long> notasPorProva = new LinkedHashMap<>();
       for (Map.Entry<Prova, List<Questao>> innerEntry : entry.getValue().entrySet()) {
@@ -112,7 +113,8 @@ public class RankingService {
 
   private Long calcularMediaProvas(Collection<Long> notasPorProva) {
 
-    LongSummaryStatistics sumario = notasPorProva.stream().collect(LongSummaryStatistics::new, LongSummaryStatistics::accept, LongSummaryStatistics::combine);
+    LongSummaryStatistics sumario = notasPorProva.stream().collect(LongSummaryStatistics::new,
+        LongSummaryStatistics::accept, LongSummaryStatistics::combine);
     return Double.valueOf(sumario.getAverage()).longValue();
   }
 
@@ -141,32 +143,38 @@ public class RankingService {
 
   public List<RankingDTO> computarRanking(LinkedHashMap<Aluno, Long> mapAlunosNotas) {
     List<RankingDTO> ranking = new ArrayList<>();
+    if (mapAlunosNotas != null && !mapAlunosNotas.isEmpty()) {
 
-    for (Map.Entry<Aluno, Long> entry : mapAlunosNotas.entrySet()) {
+      for (Map.Entry<Aluno, Long> entry : mapAlunosNotas.entrySet()) {
+        Aluno aluno = entry.getKey();
+        Long nota = entry.getValue();
+        if(
+          aluno != null && aluno.getId() != null && 
+          aluno.getNome() != null && nota != null){
+          RankingDTO dto = new RankingDTO();
+          dto.setAlunoId(aluno.getId());
+          dto.setAlunoNome(aluno.getNome());
+          dto.setNota(nota);
+          ranking.add(dto);
+        }
+      }
 
-      RankingDTO dto = new RankingDTO();
-      dto.setAlunoId(entry.getKey().getId());
-      dto.setAlunoNome(entry.getKey().getNome());
-      dto.setNota(entry.getValue());
-      ranking.add(dto);
-
-    }
-
-    if(!ranking.isEmpty()){
-      ranking = ranking.stream().sorted().collect(Collectors.toList());
-      RankingDTO ultimaPosicao = null;
-      for (Long i = 0L ; i<= ranking.size()-1 ; i++) {
-        Long j = i + 1;
-        RankingDTO dto = ranking.get(i.intValue());
-        if(ultimaPosicao != null){
-          if(ultimaPosicao.getNota().equals(dto.getNota())){
-            dto.setRanking(i);    
+      if (!ranking.isEmpty()) {
+        ranking = ranking.stream().sorted().collect(Collectors.toList());
+        RankingDTO ultimaPosicao = null;
+        for (Long i = 0L; i <= ranking.size() - 1; i++) {
+          Long j = i + 1;
+          RankingDTO dto = ranking.get(i.intValue());
+          if (ultimaPosicao != null) {
+            if (ultimaPosicao.getNota().equals(dto.getNota())) {
+              dto.setRanking(i);
+            }
           }
+          if (dto.getRanking() == null) {
+            dto.setRanking(j);
+          }
+          ultimaPosicao = dto;
         }
-        if(dto.getRanking() == null){
-          dto.setRanking(j);
-        }
-        ultimaPosicao = dto;
       }
     }
     return ranking;

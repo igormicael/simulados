@@ -1,5 +1,7 @@
 package br.com.im.simulados.model;
 
+import java.util.Objects;
+
 import javax.persistence.Entity;
 import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
@@ -16,15 +18,9 @@ import org.hibernate.envers.Audited;
 
 import br.com.im.simulados.dto.RespostaDTO;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Entity
 @Audited
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
 @Table(name = "aluno_resposta")
 public class AlunoResposta {
 
@@ -65,6 +61,94 @@ public class AlunoResposta {
 		this.prova = new Prova(resposta.getProvaId());
 		this.questao = new Questao(resposta.getQuestaoId());
 		this.alternativa = new Alternativa(resposta.getAlternativaId());
+	}
+
+	public AlunoResposta() {
+	}
+
+	public AlunoResposta(Long id, Aluno aluno, Simulado simulado, Prova prova, Questao questao, Alternativa alternativa) {
+		this.id = id;
+		this.aluno = aluno;
+		this.simulado = simulado;
+		this.prova = prova;
+		this.questao = questao;
+		this.alternativa = alternativa;
+	}
+
+	public Long getId() {
+		return this.id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public Aluno getAluno() {
+		return this.aluno;
+	}
+
+	public void setAluno(Aluno aluno) {
+		this.aluno = aluno;
+	}
+
+	public Simulado getSimulado() {
+		return this.simulado;
+	}
+
+	public void setSimulado(Simulado simulado) {
+		this.simulado = simulado;
+	}
+
+	public Prova getProva() {
+		return this.prova;
+	}
+
+	public void setProva(Prova prova) {
+		this.prova = prova;
+	}
+
+	public Questao getQuestao() {
+		return this.questao;
+	}
+
+	public void setQuestao(Questao questao) {
+		this.questao = questao;
+	}
+
+	public Alternativa getAlternativa() {
+		return this.alternativa;
+	}
+
+	public void setAlternativa(Alternativa alternativa) {
+		this.alternativa = alternativa;
+	}
+
+	@Override
+		public boolean equals(Object o) {
+				if (o == this)
+						return true;
+				if (!(o instanceof AlunoResposta)) {
+						return false;
+				}
+				AlunoResposta alunoResposta = (AlunoResposta) o;
+				return Objects.equals(id, alunoResposta.id) && Objects.equals(aluno, alunoResposta.aluno) && Objects.equals(simulado, alunoResposta.simulado) && Objects.equals(prova, alunoResposta.prova) && Objects.equals(questao, alunoResposta.questao) && Objects.equals(alternativa, alunoResposta.alternativa);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(id, aluno, simulado, prova, questao, alternativa);
+	}
+
+	@Override
+	public String toString() {
+		return "{" +
+			" id='" + getId() + "'" +
+			", aluno='" + getAluno() + "'" +
+			", simulado='" + getSimulado() + "'" +
+			", prova='" + getProva() + "'" +
+			", questao='" + getQuestao() + "'" +
+			", alternativa='" + getAlternativa() + "'" +
+			"}";
 	}
 
 }

@@ -1,6 +1,7 @@
 package br.com.im.simulados.model;
 
 import java.util.List;
+import java.util.Objects;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -20,15 +21,9 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.hibernate.envers.Audited;
 
 import io.swagger.annotations.ApiModelProperty;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Entity
 @Audited
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
 @Table(name = "prova")
 public class Prova {
 
@@ -58,6 +53,84 @@ public class Prova {
 
 	public Prova(Long provaId) {
 		this.id = provaId;
+	}
+
+	public Prova() {
+	}
+
+	public Prova(Long id, Disciplina disciplina, Gabarito gabarito, Simulado simulado, List<Questao> questoes) {
+		this.id = id;
+		this.disciplina = disciplina;
+		this.gabarito = gabarito;
+		this.simulado = simulado;
+		this.questoes = questoes;
+	}
+
+	public Long getId() {
+		return this.id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public Disciplina getDisciplina() {
+		return this.disciplina;
+	}
+
+	public void setDisciplina(Disciplina disciplina) {
+		this.disciplina = disciplina;
+	}
+
+	public Gabarito getGabarito() {
+		return this.gabarito;
+	}
+
+	public void setGabarito(Gabarito gabarito) {
+		this.gabarito = gabarito;
+	}
+
+	public Simulado getSimulado() {
+		return this.simulado;
+	}
+
+	public void setSimulado(Simulado simulado) {
+		this.simulado = simulado;
+	}
+
+	public List<Questao> getQuestoes() {
+		return this.questoes;
+	}
+
+	public void setQuestoes(List<Questao> questoes) {
+		this.questoes = questoes;
+	}
+
+	@Override
+		public boolean equals(Object o) {
+				if (o == this)
+						return true;
+				if (!(o instanceof Prova)) {
+						return false;
+				}
+				Prova prova = (Prova) o;
+				return Objects.equals(id, prova.id) && Objects.equals(disciplina, prova.disciplina) && Objects.equals(gabarito, prova.gabarito) && Objects.equals(simulado, prova.simulado) && Objects.equals(questoes, prova.questoes);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(id, disciplina, gabarito, simulado, questoes);
+	}
+
+	@Override
+	public String toString() {
+		return "{" +
+			" id='" + getId() + "'" +
+			", disciplina='" + getDisciplina() + "'" +
+			", gabarito='" + getGabarito() + "'" +
+			", simulado='" + getSimulado() + "'" +
+			", questoes='" + getQuestoes() + "'" +
+			"}";
 	}
 
 }
