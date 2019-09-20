@@ -69,6 +69,12 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+				<configuration>
+          <profiles>
+            <profile>dev</profile>
+            <profile>prod</profile>
+          </profiles>
+        </configuration>
 			</plugin>
 			<plugin>
 				<groupId>org.flywaydb</groupId>

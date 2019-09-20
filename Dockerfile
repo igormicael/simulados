@@ -14,4 +14,4 @@ ARG DEPENDENCY=/workspace
 
 COPY --from=build ${DEPENDENCY}/target/simulados-0.0.1.jar .
 
-ENTRYPOINT ["java","-jar","simulados-0.0.1.jar"]
+ENTRYPOINT [ "sh", "-c", "java $JAVA_OPTS -Dspring.profiles.active=dev -jar simulados-0.0.1.jar" ]
