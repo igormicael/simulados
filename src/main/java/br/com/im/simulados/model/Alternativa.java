@@ -18,15 +18,9 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import org.hibernate.envers.Audited;
 
 import io.swagger.annotations.ApiModelProperty;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Entity
 @Audited
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
 @Table(name = "alternativa")
 public class Alternativa {
 
