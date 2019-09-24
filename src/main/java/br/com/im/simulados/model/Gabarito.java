@@ -1,25 +1,23 @@
 package br.com.im.simulados.model;
 
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import org.hibernate.envers.Audited;
 
@@ -39,23 +37,19 @@ public class Gabarito {
 	@Column
 	private Date desativacao;
 
-	@OneToMany(mappedBy = "gabarito", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
-	@JsonManagedReference
-	@ApiModelProperty(notes = "respostas das questões da prova")
-	private List<Alternativa> altenartivas;
-
 	@ManyToOne
 	@JoinColumn(name = "prova_id", nullable = false, foreignKey = @ForeignKey(name = "gabrito_prova_id"))
 	@JsonBackReference
 	private Prova prova;
 
+	private List<AlternativaCorreta> alternativasCorretas;
+
 	public Gabarito() {
 	}
 
-	public Gabarito(Long id, Date desativacao, List<Alternativa> altenartivas, Prova prova) {
+	public Gabarito(Long id, Date desativacao, Prova prova) {
 		this.id = id;
 		this.desativacao = desativacao;
-		this.altenartivas = altenartivas;
 		this.prova = prova;
 	}
 
@@ -75,20 +69,31 @@ public class Gabarito {
 		this.desativacao = desativacao;
 	}
 
-	public List<Alternativa> getAltenartivas() {
-		return this.altenartivas;
-	}
-
-	public void setAltenartivas(List<Alternativa> altenartivas) {
-		this.altenartivas = altenartivas;
-	}
-
 	public Prova getProva() {
 		return this.prova;
 	}
 
 	public void setProva(Prova prova) {
 		this.prova = prova;
+	}
+
+	public List<AlternativaCorreta> getAlternativasCorretas() {
+		return this.alternativasCorretas;
+	}
+
+	public void setAlternativasCorretas(List<AlternativaCorreta> alternativasCorretas) {
+		this.alternativasCorretas = alternativasCorretas;
+	}
+
+	public List<Alternativa> getAlternativas(){
+		if(alternativasCorretas != null){
+			return alternativasCorretas
+				.stream()
+				.filter(i -> i.getAlternativa() != null)
+				.map(AlternativaCorreta::getAlternativa)
+				.collect(Collectors.toList());
+		}
+		return Collections.emptyList();
 	}
 
 	@Override
@@ -99,12 +104,12 @@ public class Gabarito {
 						return false;
 				}
 				Gabarito gabarito = (Gabarito) o;
-				return Objects.equals(id, gabarito.id) && Objects.equals(desativacao, gabarito.desativacao) && Objects.equals(altenartivas, gabarito.altenartivas) && Objects.equals(prova, gabarito.prova);
+				return Objects.equals(id, gabarito.id) && Objects.equals(desativacao, gabarito.desativacao) && Objects.equals(prova, gabarito.prova);
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(id, desativacao, altenartivas, prova);
+		return Objects.hash(id, desativacao, prova);
 	}
 
 	@Override
@@ -112,7 +117,6 @@ public class Gabarito {
 		return "{" +
 			" id='" + getId() + "'" +
 			", desativacao='" + getDesativacao() + "'" +
-			", altenartivas='" + getAltenartivas() + "'" +
 			", prova='" + getProva() + "'" +
 			"}";
 	}

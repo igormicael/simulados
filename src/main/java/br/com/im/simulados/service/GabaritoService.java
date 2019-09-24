@@ -38,6 +38,10 @@ public class GabaritoService {
 		this.repository.deleteAll();
 	}
 
+	public List<Gabarito> findAllByProvaId(Long id) {
+		return this.repository.findAllByProvaId(id);
+	}
+
 	public Gabarito findByProvaId(Long id) {
 		return this.repository.findByProvaId(id);
 	}

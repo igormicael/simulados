@@ -39,11 +39,6 @@ public class Alternativa {
 	@JsonBackReference
 	private Questao questao;
 
-	@ManyToOne
-	@JoinColumn(name = "gabarito_id", nullable = true, foreignKey = @ForeignKey(name = "alternativa_gabrito_id"))
-	@JsonBackReference
-	private Gabarito gabarito;
-
 	public Alternativa() {
 	}
 
@@ -51,11 +46,10 @@ public class Alternativa {
 		this.id = alternativaId;
 	}
 
-	public Alternativa(Long id, String descricao, Questao questao, Gabarito gabarito) {
+	public Alternativa(Long id, String descricao, Questao questao) {
 		this.id = id;
 		this.descricao = descricao;
 		this.questao = questao;
-		this.gabarito = gabarito;
 	}
 
 	public Long getId() {
@@ -82,14 +76,6 @@ public class Alternativa {
 		this.questao = questao;
 	}
 
-	public Gabarito getGabarito() {
-		return this.gabarito;
-	}
-
-	public void setGabarito(Gabarito gabarito) {
-		this.gabarito = gabarito;
-	}
-
 	@Override
 		public boolean equals(Object o) {
 				if (o == this)
@@ -98,12 +84,12 @@ public class Alternativa {
 						return false;
 				}
 				Alternativa alternativa = (Alternativa) o;
-				return Objects.equals(id, alternativa.id) && Objects.equals(descricao, alternativa.descricao) && Objects.equals(questao, alternativa.questao) && Objects.equals(gabarito, alternativa.gabarito);
+				return Objects.equals(id, alternativa.id) && Objects.equals(descricao, alternativa.descricao) && Objects.equals(questao, alternativa.questao);
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(id, descricao, questao, gabarito);
+		return Objects.hash(id, descricao, questao);
 	}
 
 	@Override
@@ -112,7 +98,6 @@ public class Alternativa {
 			" id='" + getId() + "'" +
 			", descricao='" + getDescricao() + "'" +
 			", questao='" + getQuestao() + "'" +
-			", gabarito='" + getGabarito() + "'" +
 			"}";
 	}
 

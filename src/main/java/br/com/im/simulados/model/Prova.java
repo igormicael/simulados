@@ -1,10 +1,12 @@
 package br.com.im.simulados.model;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -37,9 +39,10 @@ public class Prova {
 	@JoinColumn(name = "disciplina_id", nullable = true, foreignKey = @ForeignKey(name = "prova_disciplina_id"))
 	private Disciplina disciplina;
 
-	@ManyToOne
-	@JoinColumn(name = "gabarito_id", nullable = true, foreignKey = @ForeignKey(name = "prova_gabarito_id"))
-	private Gabarito gabarito;
+	@OneToMany(mappedBy = "gabarito", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+	@JsonManagedReference
+	@ApiModelProperty(notes = "gabaritos da prova")
+	private List<Gabarito> gabaritos;
 
 	@ManyToOne
 	@JoinColumn(name = "simulado_id", nullable = false, foreignKey = @ForeignKey(name = "prova_simulado_id"))
@@ -58,10 +61,9 @@ public class Prova {
 	public Prova() {
 	}
 
-	public Prova(Long id, Disciplina disciplina, Gabarito gabarito, Simulado simulado, List<Questao> questoes) {
+	public Prova(Long id, Disciplina disciplina, Simulado simulado, List<Questao> questoes) {
 		this.id = id;
 		this.disciplina = disciplina;
-		this.gabarito = gabarito;
 		this.simulado = simulado;
 		this.questoes = questoes;
 	}
@@ -82,14 +84,6 @@ public class Prova {
 		this.disciplina = disciplina;
 	}
 
-	public Gabarito getGabarito() {
-		return this.gabarito;
-	}
-
-	public void setGabarito(Gabarito gabarito) {
-		this.gabarito = gabarito;
-	}
-
 	public Simulado getSimulado() {
 		return this.simulado;
 	}
@@ -106,6 +100,24 @@ public class Prova {
 		this.questoes = questoes;
 	}
 
+	public List<Gabarito> getGabaritos() {
+		return this.gabaritos;
+	}
+
+	public void setGabaritos(List<Gabarito> gabaritos) {
+		this.gabaritos = gabaritos;
+	}
+
+	public void adicionarGabarito(Gabarito gabarito){
+		if(getGabaritos() == null){
+			setGabaritos(new ArrayList<>());
+		}
+		if(!getGabaritos().contains(gabarito)){
+			getGabaritos().add(gabarito);
+		}
+
+	}
+
 	@Override
 		public boolean equals(Object o) {
 				if (o == this)
@@ -114,12 +126,12 @@ public class Prova {
 						return false;
 				}
 				Prova prova = (Prova) o;
-				return Objects.equals(id, prova.id) && Objects.equals(disciplina, prova.disciplina) && Objects.equals(gabarito, prova.gabarito) && Objects.equals(simulado, prova.simulado) && Objects.equals(questoes, prova.questoes);
+				return Objects.equals(id, prova.id) && Objects.equals(disciplina, prova.disciplina) && Objects.equals(simulado, prova.simulado) && Objects.equals(questoes, prova.questoes);
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(id, disciplina, gabarito, simulado, questoes);
+		return Objects.hash(id, disciplina,  simulado, questoes);
 	}
 
 	@Override
@@ -127,7 +139,6 @@ public class Prova {
 		return "{" +
 			" id='" + getId() + "'" +
 			", disciplina='" + getDisciplina() + "'" +
-			", gabarito='" + getGabarito() + "'" +
 			", simulado='" + getSimulado() + "'" +
 			", questoes='" + getQuestoes() + "'" +
 			"}";

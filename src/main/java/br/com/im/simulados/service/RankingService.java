@@ -80,7 +80,7 @@ public class RankingService {
         List<Questao> questoesCertas = new ArrayList<>();
         Prova prova_ = provas.get(provas.indexOf(prova));
         Gabarito gabarito = gabaritoService.findByProvaId(prova_.getId());
-        List<Alternativa> altenartivasCertas = gabarito.getAltenartivas();
+        List<Alternativa> altenartivasCertas = gabarito.getAlternativas();
         List<Alternativa> map = entry.getValue().stream().filter(i -> i.getProva().equals(prova_))
             .map(AlunoResposta::getAlternativa).distinct().collect(Collectors.toList());
 

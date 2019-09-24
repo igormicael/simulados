@@ -46,8 +46,8 @@ public class ProvaService {
 
 	public Prova findByIdWithGabarito(Long id) {
 		Prova prova = findById(id);
-		Gabarito gabarito = gabaritoService.findByProvaId(id);
-		prova.setGabarito(gabarito);
+		List<Gabarito> gabaritos = gabaritoService.findAllByProvaId(id);
+		prova.setGabaritos(gabaritos);
 		return prova;
 	}
 
