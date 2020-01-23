@@ -2,7 +2,7 @@ package br.com.im.simulados.service;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.LinkedHashMap;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -32,7 +32,7 @@ public class RankingServiceTest {
 
   @Test
   public void computarRankingComMapVazio(){
-    List<RankingDTO> computarRanking = rankingService.computarRanking(new LinkedHashMap<>());
+    List<RankingDTO> computarRanking = rankingService.computarRanking(new HashMap<>());
 
     Assert.assertNotNull(computarRanking);
     Assert.assertEquals( Collections.emptyList() , computarRanking);
@@ -40,7 +40,7 @@ public class RankingServiceTest {
 
   @Test
   public void computarRankingComValueDoMapNulo(){
-    LinkedHashMap<Aluno, Long> mapAlunosNotas = new LinkedHashMap<>();
+    Map<Aluno, Long> mapAlunosNotas = new HashMap<>();
     mapAlunosNotas.put(Alunos.getAlunoVazio(), null);
 
     List<RankingDTO> computarRanking = rankingService.computarRanking(mapAlunosNotas);
@@ -51,7 +51,7 @@ public class RankingServiceTest {
 
   @Test
   public void computarRankingComAlunoSemDadosPreenchidos(){
-    LinkedHashMap<Aluno, Long> mapAlunosNotas = new LinkedHashMap<>();
+    Map<Aluno, Long> mapAlunosNotas = new HashMap<>();
     mapAlunosNotas.put(Alunos.getAlunoVazio(), 600L);
 
     List<RankingDTO> computarRanking = rankingService.computarRanking(mapAlunosNotas);
@@ -62,7 +62,7 @@ public class RankingServiceTest {
 
   @Test
   public void computarRankingComAlunoComDadosPreenchidos(){
-    LinkedHashMap<Aluno, Long> mapAlunosNotas = new LinkedHashMap<>();
+    Map<Aluno, Long> mapAlunosNotas = new HashMap<>();
     Aluno igor = Alunos.getIgor();
     mapAlunosNotas.put(igor, 600L);
 
@@ -176,8 +176,8 @@ public class RankingServiceTest {
 
   @Test
   public void testarCalculoComMapVazio(){
-    LinkedHashMap<Aluno, LinkedHashMap<Prova, List<Questao>>> mapAlunosQuestoesAcertadas = null;
-    LinkedHashMap<Aluno, Long> calcularNotaPorAluno = rankingService.calcularNotaPorAluno(mapAlunosQuestoesAcertadas);
+    Map<Aluno, Map<Prova, List<Questao>>> mapAlunosQuestoesAcertadas = null;
+    Map<Aluno, Long> calcularNotaPorAluno = rankingService.calcularNotaPorAluno(mapAlunosQuestoesAcertadas);
     
     Assert.assertNotNull(calcularNotaPorAluno);
     Assert.assertEquals(Collections.emptyMap() ,calcularNotaPorAluno);
@@ -186,12 +186,12 @@ public class RankingServiceTest {
 
   @Test
   public void testarCalculoComMapProvaQuestaoVazia(){
-    LinkedHashMap<Aluno, LinkedHashMap<Prova, List<Questao>>> mapAlunosQuestoesAcertadas = 
-    new LinkedHashMap<>();
+    Map<Aluno, Map<Prova, List<Questao>>> mapAlunosQuestoesAcertadas = 
+    new HashMap<>();
 
     mapAlunosQuestoesAcertadas.put(Alunos.getAlunoVazio(), null);
 
-    LinkedHashMap<Aluno, Long> calcularNotaPorAluno = rankingService.calcularNotaPorAluno(mapAlunosQuestoesAcertadas);
+    Map<Aluno, Long> calcularNotaPorAluno = rankingService.calcularNotaPorAluno(mapAlunosQuestoesAcertadas);
     
     Assert.assertNotNull(calcularNotaPorAluno);
     Assert.assertEquals(Collections.emptyMap() ,calcularNotaPorAluno);
@@ -200,21 +200,21 @@ public class RankingServiceTest {
 
   @Test
   public void testarCalculoComMapProvaQuestaoValidas(){
-    LinkedHashMap<Aluno, LinkedHashMap<Prova, List<Questao>>> mapAlunosQuestoesAcertadas = 
-    new LinkedHashMap<>();
+    Map<Aluno, Map<Prova, List<Questao>>> mapAlunosQuestoesAcertadas = 
+    new HashMap<>();
 
-    LinkedHashMap<Prova, List<Questao>> questoesProva = new LinkedHashMap<>();
+    Map<Prova, List<Questao>> questoesProva = new HashMap<>();
 
     Prova prova = Provas.getProvaComTresQuestoesFaceis();
     questoesProva.put(prova, prova.getQuestoes());
 
     mapAlunosQuestoesAcertadas.put(Alunos.getIgor(), questoesProva);
 
-    LinkedHashMap<Aluno, Long> calcularNotaPorAluno = rankingService.calcularNotaPorAluno(mapAlunosQuestoesAcertadas);
+    Map<Aluno, Long> calcularNotaPorAluno = rankingService.calcularNotaPorAluno(mapAlunosQuestoesAcertadas);
     
     Assert.assertNotNull(calcularNotaPorAluno);
 
-    Map<Aluno, Long> esperado = new LinkedHashMap<>();
+    Map<Aluno, Long> esperado = new HashMap<>();
 
     esperado.put(Alunos.getIgor(), Long.valueOf(645));
     

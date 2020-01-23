@@ -2,7 +2,7 @@ package br.com.im.simulados.service;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.LinkedHashMap;
+import java.util.HashMap;
 import java.util.List;
 import java.util.LongSummaryStatistics;
 import java.util.Map;
@@ -37,41 +37,35 @@ public class RankingService {
 
     List<Prova> provas = provaService.findAllBySimuladoId(id);
 
-    LinkedHashMap<Aluno, List<AlunoResposta>> mapAlunosRespostas = listaToMap(alunosResposta);
+    Map<Aluno, List<AlunoResposta>> mapAlunosRespostas = listaToMap(alunosResposta);
 
-    LinkedHashMap<Aluno, LinkedHashMap<Prova, List<Questao>>> mapAlunosProvasQuestoesAcertadas = verificarQuestoesCorretas(
+    Map<Aluno, Map<Prova, List<Questao>>> mapAlunosProvasQuestoesAcertadas = verificarQuestoesCorretas(
         mapAlunosRespostas, provas);
 
-    LinkedHashMap<Aluno, Long> mapAlunosNotas = calcularNotaPorAluno(mapAlunosProvasQuestoesAcertadas);
+    Map<Aluno, Long> mapAlunosNotas = calcularNotaPorAluno(mapAlunosProvasQuestoesAcertadas);
 
     return computarRanking(mapAlunosNotas);
 
   }
 
-  public LinkedHashMap<Aluno, List<AlunoResposta>> listaToMap(List<AlunoResposta> alunosResposta) {
+  public Map<Aluno, List<AlunoResposta>> listaToMap(List<AlunoResposta> alunosResposta) {
 
-    LinkedHashMap<Aluno, List<AlunoResposta>> map = new LinkedHashMap<Aluno, List<AlunoResposta>>();
+    Map<Aluno, List<AlunoResposta>> map = new HashMap<Aluno, List<AlunoResposta>>();
     if (alunosResposta != null && !alunosResposta.isEmpty()) {
-
-      List<Aluno> alunos = alunosResposta.stream().map(AlunoResposta::getAluno).collect(Collectors.toList());
-      if (alunos != null && !alunos.isEmpty()) {
-        for (Aluno aluno : alunos) {
-          List<AlunoResposta> lista = alunosResposta.stream().filter(i -> i.getAluno().equals(aluno))
-              .collect(Collectors.toList());
-          map.put(aluno, lista);
-        }
-      }
+    	
+    	map = alunosResposta.stream().
+    		collect(Collectors.groupingBy(AlunoResposta::getAluno));
     }
     return map;
   }
 
-  public LinkedHashMap<Aluno, LinkedHashMap<Prova, List<Questao>>> verificarQuestoesCorretas(
-      LinkedHashMap<Aluno, List<AlunoResposta>> mapAlunosRespostas, List<Prova> provas) {
+  public Map<Aluno, Map<Prova, List<Questao>>> verificarQuestoesCorretas(
+      Map<Aluno, List<AlunoResposta>> mapAlunosRespostas, List<Prova> provas) {
 
-    LinkedHashMap<Aluno, LinkedHashMap<Prova, List<Questao>>> mapAlunoProvaAlternativasCertas = new LinkedHashMap<>();
+    Map<Aluno, Map<Prova, List<Questao>>> mapAlunoProvaAlternativasCertas = new HashMap<>();
 
     for (Map.Entry<Aluno, List<AlunoResposta>> entry : mapAlunosRespostas.entrySet()) {
-      LinkedHashMap<Prova, List<Questao>> questoesPorProva = new LinkedHashMap<>();
+      Map<Prova, List<Questao>> questoesPorProva = new HashMap<>();
 
       List<Prova> alunoProvas = entry.getValue().stream().filter(i -> i.getAluno().equals(entry.getKey()))
           .map(AlunoResposta::getProva).distinct().collect(Collectors.toList());
@@ -92,14 +86,14 @@ public class RankingService {
     return mapAlunoProvaAlternativasCertas;
   }
 
-  public LinkedHashMap<Aluno, Long> calcularNotaPorAluno(
-      LinkedHashMap<Aluno, LinkedHashMap<Prova, List<Questao>>> mapAlunosQuestoesAcertadas) {
+  public Map<Aluno, Long> calcularNotaPorAluno(
+      Map<Aluno, Map<Prova, List<Questao>>> mapAlunosQuestoesAcertadas) {
 
-    LinkedHashMap<Aluno, Long> notasPorAluno = new LinkedHashMap<>();
+    Map<Aluno, Long> notasPorAluno = new HashMap<>();
 
     if(mapAlunosQuestoesAcertadas != null && !mapAlunosQuestoesAcertadas.isEmpty()){
-      for (Map.Entry<Aluno, LinkedHashMap<Prova, List<Questao>>> entry : mapAlunosQuestoesAcertadas.entrySet()) {
-        LinkedHashMap<Prova, Long> notasPorProva = new LinkedHashMap<>();
+      for (Map.Entry<Aluno, Map<Prova, List<Questao>>> entry : mapAlunosQuestoesAcertadas.entrySet()) {
+        Map<Prova, Long> notasPorProva = new HashMap<>();
 
         if(entry != null && entry.getValue() != null && !entry.getValue().isEmpty()){
           for (Map.Entry<Prova, List<Questao>> innerEntry : entry.getValue().entrySet()) {
@@ -150,7 +144,7 @@ public class RankingService {
     return (valorFacil + valorMedia + valorDificil + 600);
   }
 
-  public List<RankingDTO> computarRanking(LinkedHashMap<Aluno, Long> mapAlunosNotas) {
+  public List<RankingDTO> computarRanking(Map<Aluno, Long> mapAlunosNotas) {
     List<RankingDTO> ranking = new ArrayList<>();
     if (mapAlunosNotas != null && !mapAlunosNotas.isEmpty()) {
 
