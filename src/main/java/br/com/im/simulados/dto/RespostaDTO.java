@@ -13,6 +13,7 @@ import lombok.ToString;
 @ToString
 public class RespostaDTO {
 
+  private Long id;
   private Long alunoId;
   private Long simuladoId;
   private Long provaId;
