@@ -2,7 +2,6 @@ package br.com.im.simulados.model;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Objects;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -16,12 +15,24 @@ import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-
 import org.hibernate.envers.Audited;
 
-import io.swagger.annotations.ApiModelProperty;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
+import io.swagger.annotations.ApiModelProperty;
+import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@ToString
+@EqualsAndHashCode
 @Entity
 @Audited
 @Table(name = "simulado")
@@ -49,74 +60,6 @@ public class Simulado {
 
 	public Simulado(Long simuladoId) {
 		this.id = simuladoId;
-	}
-
-	public Simulado() {
-	}
-
-	public Simulado(Long id, Date data, CategoriaSimulado tipo, List<Prova> provas) {
-		this.id = id;
-		this.data = data;
-		this.tipo = tipo;
-		this.provas = provas;
-	}
-
-	public Long getId() {
-		return this.id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public Date getData() {
-		return this.data;
-	}
-
-	public void setData(Date data) {
-		this.data = data;
-	}
-
-	public CategoriaSimulado getTipo() {
-		return this.tipo;
-	}
-
-	public void setTipo(CategoriaSimulado tipo) {
-		this.tipo = tipo;
-	}
-
-	public List<Prova> getProvas() {
-		return this.provas;
-	}
-
-	public void setProvas(List<Prova> provas) {
-		this.provas = provas;
-	}
-
-	@Override
-		public boolean equals(Object o) {
-				if (o == this)
-						return true;
-				if (!(o instanceof Simulado)) {
-						return false;
-				}
-				Simulado simulado = (Simulado) o;
-				return Objects.equals(id, simulado.id) && Objects.equals(data, simulado.data) && Objects.equals(tipo, simulado.tipo) && Objects.equals(provas, simulado.provas);
-	}
-
-	@Override
-	public int hashCode() {
-		return Objects.hash(id, data, tipo, provas);
-	}
-
-	@Override
-	public String toString() {
-		return "{" +
-			" id='" + getId() + "'" +
-			", data='" + getData() + "'" +
-			", tipo='" + getTipo() + "'" +
-			", provas='" + getProvas() + "'" +
-			"}";
 	}
 
 }

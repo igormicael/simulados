@@ -1,7 +1,6 @@
 package br.com.im.simulados.model;
 
 import java.util.List;
-import java.util.Objects;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -18,13 +17,25 @@ import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import org.hibernate.envers.Audited;
+
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
-import org.hibernate.envers.Audited;
-
 import io.swagger.annotations.ApiModelProperty;
+import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@ToString
+@EqualsAndHashCode
 @Entity
 @Audited
 @Table(name = "questao")
@@ -57,85 +68,6 @@ public class Questao {
 
 	public Questao(Long questaoId) {
 		this.id = questaoId;
-	}
-
-
-	public Questao() {
-	}
-
-	public Questao(Long id, String enunciado, DificuldadeQuestao dificuldadeQuestao, List<Alternativa> alternativas, Prova prova) {
-		this.id = id;
-		this.enunciado = enunciado;
-		this.dificuldadeQuestao = dificuldadeQuestao;
-		this.alternativas = alternativas;
-		this.prova = prova;
-	}
-
-	public Long getId() {
-		return this.id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public String getEnunciado() {
-		return this.enunciado;
-	}
-
-	public void setEnunciado(String enunciado) {
-		this.enunciado = enunciado;
-	}
-
-	public DificuldadeQuestao getDificuldadeQuestao() {
-		return this.dificuldadeQuestao;
-	}
-
-	public void setDificuldadeQuestao(DificuldadeQuestao dificuldadeQuestao) {
-		this.dificuldadeQuestao = dificuldadeQuestao;
-	}
-
-	public List<Alternativa> getAlternativas() {
-		return this.alternativas;
-	}
-
-	public void setAlternativas(List<Alternativa> alternativas) {
-		this.alternativas = alternativas;
-	}
-
-	public Prova getProva() {
-		return this.prova;
-	}
-
-	public void setProva(Prova prova) {
-		this.prova = prova;
-	}
-
-	@Override
-		public boolean equals(Object o) {
-				if (o == this)
-						return true;
-				if (!(o instanceof Questao)) {
-						return false;
-				}
-				Questao questao = (Questao) o;
-				return Objects.equals(id, questao.id) && Objects.equals(enunciado, questao.enunciado) && Objects.equals(dificuldadeQuestao, questao.dificuldadeQuestao) && Objects.equals(alternativas, questao.alternativas) && Objects.equals(prova, questao.prova);
-	}
-
-	@Override
-	public int hashCode() {
-		return Objects.hash(id, enunciado, dificuldadeQuestao, alternativas, prova);
-	}
-
-	@Override
-	public String toString() {
-		return "{" +
-			" id='" + getId() + "'" +
-			", enunciado='" + getEnunciado() + "'" +
-			", dificuldadeQuestao='" + getDificuldadeQuestao() + "'" +
-			", alternativas='" + getAlternativas() + "'" +
-			", prova='" + getProva() + "'" +
-			"}";
 	}
 
 }

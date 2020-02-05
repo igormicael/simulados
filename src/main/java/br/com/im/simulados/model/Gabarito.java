@@ -2,7 +2,6 @@ package br.com.im.simulados.model;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Objects;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -18,13 +17,25 @@ import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import org.hibernate.envers.Audited;
+
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
-import org.hibernate.envers.Audited;
-
 import io.swagger.annotations.ApiModelProperty;
+import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@ToString
+@EqualsAndHashCode
 @Entity
 @Audited
 @Table(name = "gabarito")
@@ -49,72 +60,5 @@ public class Gabarito {
 	@JsonBackReference
 	private Prova prova;
 
-	public Gabarito() {
-	}
-
-	public Gabarito(Long id, Date desativacao, List<Alternativa> altenartivas, Prova prova) {
-		this.id = id;
-		this.desativacao = desativacao;
-		this.altenartivas = altenartivas;
-		this.prova = prova;
-	}
-
-	public Long getId() {
-		return this.id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public Date getDesativacao() {
-		return this.desativacao;
-	}
-
-	public void setDesativacao(Date desativacao) {
-		this.desativacao = desativacao;
-	}
-
-	public List<Alternativa> getAltenartivas() {
-		return this.altenartivas;
-	}
-
-	public void setAltenartivas(List<Alternativa> altenartivas) {
-		this.altenartivas = altenartivas;
-	}
-
-	public Prova getProva() {
-		return this.prova;
-	}
-
-	public void setProva(Prova prova) {
-		this.prova = prova;
-	}
-
-	@Override
-		public boolean equals(Object o) {
-				if (o == this)
-						return true;
-				if (!(o instanceof Gabarito)) {
-						return false;
-				}
-				Gabarito gabarito = (Gabarito) o;
-				return Objects.equals(id, gabarito.id) && Objects.equals(desativacao, gabarito.desativacao) && Objects.equals(altenartivas, gabarito.altenartivas) && Objects.equals(prova, gabarito.prova);
-	}
-
-	@Override
-	public int hashCode() {
-		return Objects.hash(id, desativacao, altenartivas, prova);
-	}
-
-	@Override
-	public String toString() {
-		return "{" +
-			" id='" + getId() + "'" +
-			", desativacao='" + getDesativacao() + "'" +
-			", altenartivas='" + getAltenartivas() + "'" +
-			", prova='" + getProva() + "'" +
-			"}";
-	}
 
 }

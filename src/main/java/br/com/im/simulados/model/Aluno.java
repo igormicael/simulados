@@ -1,7 +1,5 @@
 package br.com.im.simulados.model;
 
-import java.util.Objects;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -9,11 +7,24 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 import org.hibernate.envers.Audited;
 
 import io.swagger.annotations.ApiModelProperty;
+import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
+@Getter
+@Setter
+@EqualsAndHashCode(of = "id")
+@AllArgsConstructor
+@NoArgsConstructor
+@ToString
 @Entity
 @Audited
 @Table(name = "aluno")
@@ -25,73 +36,19 @@ public class Aluno {
 	@ApiModelProperty(notes = "Identificador único do aluno", required = true)
 	private Long id;
 
+	@NotNull
 	@Column
 	@ApiModelProperty(notes = "nome do aluno")
 	private String nome;
 
+	@NotNull
 	@Column
 	@ApiModelProperty(notes = "cpf do aluno")
 	private String cpf;
 
-	public Aluno() {
-	}
 	
 	public Aluno(Long alunoId) {
 		this.id = alunoId;
 	}
 
-	public Aluno(Long id, String nome, String cpf) {
-		this.id = id;
-		this.nome = nome;
-		this.cpf = cpf;
-	}
-
-	public Long getId() {
-		return this.id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public String getNome() {
-		return this.nome;
-	}
-
-	public void setNome(String nome) {
-		this.nome = nome;
-	}
-
-	public String getCpf() {
-		return this.cpf;
-	}
-
-	public void setCpf(String cpf) {
-		this.cpf = cpf;
-	}
-
-	@Override
-		public boolean equals(Object o) {
-				if (o == this)
-						return true;
-				if (!(o instanceof Aluno)) {
-						return false;
-				}
-				Aluno aluno = (Aluno) o;
-				return Objects.equals(id, aluno.id) ;
-	}
-
-	@Override
-	public int hashCode() {
-		return Objects.hash(id);
-	}
-
-	@Override
-	public String toString() {
-		return "{" +
-			" id='" + getId() + "'" +
-			", nome='" + getNome() + "'" +
-			", cpf='" + getCpf() + "'" +
-			"}";
-	}
 }
