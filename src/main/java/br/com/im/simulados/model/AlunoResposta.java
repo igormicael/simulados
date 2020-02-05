@@ -71,13 +71,4 @@ public class AlunoResposta {
 	@JsonBackReference
 	private Alternativa alternativa;
 
-	//TODO: Contruir melhor solução para o parse entre entidade e dto
-	public AlunoResposta(RespostaDTO resposta) {
-		this.aluno = new Aluno(resposta.getAlunoId());
-		this.simulado = new Simulado(resposta.getSimuladoId());
-		this.prova = new Prova(resposta.getProvaId());
-		this.questao = new Questao(resposta.getQuestaoId());
-		this.alternativa = new Alternativa(resposta.getAlternativaId());
-	}
-
 }

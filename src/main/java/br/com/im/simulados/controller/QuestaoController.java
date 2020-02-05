@@ -16,8 +16,8 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.im.simulados.dto.RespostaDTO;
+import br.com.im.simulados.dto.parser.RespostaParser;
 import br.com.im.simulados.model.Alternativa;
-import br.com.im.simulados.model.AlunoResposta;
 import br.com.im.simulados.model.Questao;
 import br.com.im.simulados.service.AlunoRespostaService;
 import br.com.im.simulados.service.QuestaoService;
@@ -52,8 +52,8 @@ public class QuestaoController {
 
   @PostMapping("/{id}/responder")
   public ResponseEntity<Questao> responderQuestao(@PathVariable("id") Long id, @RequestBody RespostaDTO resposta) {
-    AlunoResposta alunoResposta = new AlunoResposta(resposta);
-    alunoRespostaService.save(alunoResposta);
+	  
+    alunoRespostaService.save((new RespostaParser()).getFromDTO(resposta));
 
     return new ResponseEntity<Questao>(HttpStatus.OK);
   }
