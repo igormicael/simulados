@@ -2,10 +2,13 @@ package br.com.im.simulados.service;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.LongSummaryStatistics;
 import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,7 +53,7 @@ public class RankingService {
 
   public Map<Aluno, List<AlunoResposta>> listaToMap(List<AlunoResposta> alunosResposta) {
 
-    Map<Aluno, List<AlunoResposta>> map = new HashMap<Aluno, List<AlunoResposta>>();
+    Map<Aluno, List<AlunoResposta>> map = new HashMap<>();
     if (alunosResposta != null && !alunosResposta.isEmpty()) {
     	
     	map = alunosResposta.stream().
@@ -72,10 +75,10 @@ public class RankingService {
 
       for (Prova prova : alunoProvas) {
         List<Questao> questoesCertas = new ArrayList<>();
-        Prova prova_ = provas.get(provas.indexOf(prova));
-        Gabarito gabarito = gabaritoService.findByProvaId(prova_.getId());
+        Prova provaInterna = provas.get(provas.indexOf(prova));
+        Gabarito gabarito = gabaritoService.findByProvaId(provaInterna.getId());
         List<Alternativa> altenartivasCertas = gabarito.getAltenartivas();
-        List<Alternativa> map = entry.getValue().stream().filter(i -> i.getProva().equals(prova_))
+        List<Alternativa> map = entry.getValue().stream().filter(i -> i.getProva().equals(provaInterna))
             .map(AlunoResposta::getAlternativa).distinct().collect(Collectors.toList());
 
         map.stream().filter(i -> altenartivasCertas.contains(i)).forEach(i -> questoesCertas.add(i.getQuestao()));
@@ -109,12 +112,14 @@ public class RankingService {
   }
 
   public Long calcularMediaProvas(Collection<Long> notasPorProva) {
-    if(notasPorProva != null && !notasPorProva.isEmpty()){
-      LongSummaryStatistics sumario = notasPorProva.stream().collect(LongSummaryStatistics::new,
-          LongSummaryStatistics::accept, LongSummaryStatistics::combine);
-      return Double.valueOf(sumario.getAverage()).longValue();
-    }
-    return 0L;
+      return Math.round(
+    		  Optional.ofNullable(notasPorProva)
+    		  .orElseGet(Collections::emptyList)
+    		  .stream()
+    		  .filter(Objects::nonNull)
+    		  .collect(LongSummaryStatistics::new, LongSummaryStatistics::accept, LongSummaryStatistics::combine)
+    		  .getAverage()
+    		  );
   }
 
   public Long calcularNota(List<Questao> questoes) {
@@ -166,11 +171,10 @@ public class RankingService {
         for (Long i = 0L; i <= ranking.size() - 1; i++) {
           Long j = i + 1;
           RankingDTO dto = ranking.get(i.intValue());
-          if (ultimaPosicao != null) {
-            if (ultimaPosicao.getNota().equals(dto.getNota())) {
+          if (ultimaPosicao != null && ultimaPosicao.getNota().equals(dto.getNota())) {
               dto.setRanking(i);
-            }
           }
+          
           if (dto.getRanking() == null) {
             dto.setRanking(j);
           }

@@ -2,6 +2,8 @@ package br.com.im.simulados.controller;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -9,7 +11,6 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -51,11 +52,11 @@ public class QuestaoController {
   }
 
   @PostMapping("/{id}/responder")
-  public ResponseEntity<Questao> responderQuestao(@PathVariable("id") Long id, @RequestBody RespostaDTO resposta) {
+  public ResponseEntity<Questao> responderQuestao(@PathVariable("id") Long id, @Valid @RequestBody RespostaDTO resposta) {
 	  
     alunoRespostaService.save((new RespostaParser()).getFromDTO(resposta));
 
-    return new ResponseEntity<Questao>(HttpStatus.OK);
+    return new ResponseEntity<>(HttpStatus.OK);
   }
 
   @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -64,16 +65,6 @@ public class QuestaoController {
   @ApiResponses({ @ApiResponse(code = 204, message = "Exclusão com sucesso de uma questão") })
   public void deleteById(@PathVariable("id") Long id) {
     service.deleteById(id);
-  }
-
-  @PostMapping
-  public void save(@RequestBody Questao questao) {
-    service.save(questao);
-  }
-
-  @PutMapping
-  public void update(@RequestBody Questao questao) {
-    service.update(questao);
   }
 
 }

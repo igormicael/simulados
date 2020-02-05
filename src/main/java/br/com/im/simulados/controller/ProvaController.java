@@ -57,13 +57,13 @@ public class ProvaController {
   }
 
   @PostMapping
-  public void save(@RequestBody Prova Prova) {
-    service.save(Prova);
+  public void save(@RequestBody Prova prova) {
+    service.save(prova);
   }
 
   @PutMapping
-  public void update(@RequestBody Prova Prova) {
-    service.update(Prova);
+  public void update(@RequestBody Prova prova) {
+    service.update(prova);
   }
 
 }

@@ -11,7 +11,7 @@ import br.com.im.simulados.model.Simulado;
 public class RespostaParser {
 	
 	public AlunoResposta getFromDTO(RespostaDTO dto) {
-		return new AlunoResposta(dto.getId(), new Aluno(dto.getAlunoId()), new Simulado(dto.getSimuladoId()), new Prova(dto.getProvaId()), new Questao(dto.getQuestaoId()), new Alternativa(dto.getAlternativaId()) );
+		return new AlunoResposta(dto.getId(), new Aluno(dto.getAlunoId()) , new Simulado(dto.getSimuladoId()), new Prova(dto.getProvaId()), new Questao(dto.getQuestaoId()), new Alternativa(dto.getAlternativaId()) );
 	}
 	
 	public RespostaDTO getFromEntidade(AlunoResposta entidade) {

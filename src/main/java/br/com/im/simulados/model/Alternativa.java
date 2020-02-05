@@ -42,7 +42,6 @@ public class Alternativa {
 	private Long id;
 
 	@Column
-	@NotNull
 	@ApiModelProperty(notes = "descricao da alternativa")
 	private String descricao;
 

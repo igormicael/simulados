@@ -16,6 +16,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 import org.hibernate.envers.Audited;
 
@@ -47,10 +48,12 @@ public class Questao {
 	@ApiModelProperty(notes = "Identificador único da questao", required = true)
 	private Long id;
 
+	@NotNull
 	@Column
 	@ApiModelProperty(notes = "enunciado da questão")
 	private String enunciado;
 
+	@NotNull
 	@Column(name = "dificuldade_questao")
 	@Enumerated(EnumType.STRING)
 	@ApiModelProperty(notes = "dificuldade da questão")

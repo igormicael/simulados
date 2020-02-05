@@ -31,11 +31,9 @@ public class SwaggerConfig {
 
 	private ApiInfo apiInfo() {
 
-		ApiInfo apiInfo = new ApiInfoBuilder().title("API de sistema de simulados para o enem").description("Essa é a API.")
+		return new ApiInfoBuilder().title("API de sistema de simulados para o enem").description("Essa é a API.")
 				.license("Apache License Version 2.0").licenseUrl("https://www.apache.org/licenses/LICENSE-2.0")
 				.version("1.0.0").contact(new Contact("Igor micael", null, "igor.m.peixoto@gmail.com")).build();
-
-		return apiInfo;
 	}
 
 }
